@@ -72,3 +72,4 @@ dfm24 <- dfm(toks24)
 
 keyness <- textstat_keyness(dfm_by_date, target = "2024")
 textplot_keyness(keyness, labelsize = 3)
+

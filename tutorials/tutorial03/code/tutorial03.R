@@ -230,9 +230,14 @@ colc24 <- textstat_collocations(toks24, size = 2, min_count = 10)
 # This time, let's look at the z scores to see what cut-off to use
 ?textstat_collocations
 
-toks22 <- tokens_compound(toks22, pattern = colc22["pick a z score"])
-toks23 <- tokens_compound(toks23, pattern = colc23["pick a z score"])
-toks23 <- tokens_compound(toks24, pattern = colc24["pick a z score"])
+toks22 <- tokens_compound(toks22, pattern = colc22[colc22$z > 17,])
+toks23 <- tokens_compound(toks23, pattern = colc23[colc23$z > 17,])
+toks24 <- tokens_compound(toks24, pattern = colc24[colc24$z > 17,])
+
+
+dfm22 <- dfm(toks22)
+dfm23 <- dfm(toks23)
+dfm24 <- dfm(toks24)
 
 # Remove whitespace
 toks22 <- tokens_remove(quanteda::tokens(toks22), "") 
@@ -282,6 +287,14 @@ dfm_ukr <- rbind(dfm22, dfm23, dfm24)
 set.seed(2023)
 dfm_by_date <- dfm_group(dfm_ukr, fill = TRUE, groups = year(dfm_ukr$date))
 keyness <- textstat_keyness(dfm_by_date, target = "2022")
+textplot_keyness(keyness, labelsize = 3)
+
+dfm_by_date <- dfm_group(dfm_ukr, fill = TRUE, groups = year(dfm_ukr$date))
+keyness <- textstat_keyness(dfm_by_date, target = "2023")
+textplot_keyness(keyness, labelsize = 3)
+
+dfm_by_date <- dfm_group(dfm_ukr, fill = TRUE, groups = year(dfm_ukr$date))
+keyness <- textstat_keyness(dfm_by_date, target = "2024")
 textplot_keyness(keyness, labelsize = 3)
 
 # Try changing this code to compare keyness of 2024 against the previous two years
